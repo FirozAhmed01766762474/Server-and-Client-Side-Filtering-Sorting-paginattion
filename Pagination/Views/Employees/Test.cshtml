@@ -1,0 +1,231 @@
+﻿@using Pagination.Common;
+@model IEnumerable<Pagination.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+    var P = ViewBag.pager;
+    int i = 1;
+    int start = 0;
+    int end = 0;
+    int current_page = 1;
+    int page_size = 10;
+    string searchString = null;
+    if(P != null)
+    {
+        i = P.SerialStart;
+        start = i;
+        current_page = P.CurrentPage;
+        page_size = P.PageSize;
+        searchString = P.SearchString;
+
+    }
+
+
+    int[] rows_per_page = {5,10,20,50,100};
+}
+
+<h1 class="alart alart-primary bg-primary">Employee Information</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary btn-sm">Create New</a>
+</p>
+<br />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Test" class="form-check-inline" method="get">
+            <div class="input-group">
+                <span class="input-group-text">Select</span>
+                <select name="rowperpage" class="form-control" id="rowsPerPageSelect">
+                   @for(int j=0; j<rows_per_page.Length;j++)
+                    {
+                        @if(rows_per_page[j]==page_size)
+                        {
+                            <option value="@rows_per_page[j]" selected>@rows_per_page[j]</option>
+                        }
+                        else
+                        {
+                            <option value="@rows_per_page[j]">@rows_per_page[j]</option>
+                        }
+                    }
+
+
+                </select>
+                <input type="hidden" name="page" value="@current_page" />
+                <input type="hidden" name="searchString" value="@searchString" />
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        
+
+    </div>
+    <div class="col-md-4">
+        <form asp-action="Test" class="form-check-inline" method="get">
+            <input type="hidden" name="page" value="@current_page" />
+            <input type="hidden" name="rowperpage" value="@page_size" />
+            <input type="text" placeholder="Search here" name="searchString" value="@searchString" id="searchInput" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>
+
+<br />
+
+<table class="table table-bordered table-striped" id="employeeTable">
+    <thead>
+        <tr>
+            <th>SL#</th>
+@*             <th>
+                @Html.DisplayNameFor(model => model.EmployeeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayBasis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositionTitle)
+            </th> *@
+
+            <th>
+                <a asp-action="Test" asp-route-rowperpage="@page_size" asp-route-searchString="@searchString" asp-route-sortField="EmployeeName" asp-route-sortAscending="@(!(bool)ViewBag.CurrentSortAscending || ViewBag.CurrentSortField != "EmployeeName")">Employee Name</a>
+            </th>
+            <th>
+                <a asp-action="Test" asp-route-rowperpage="@page_size" asp-route-searchString="@searchString" asp-route-sortField="EmployeeStatus" asp-route-sortAscending="@(!(bool)ViewBag.CurrentSortAscending || ViewBag.CurrentSortField != "EmployeeStatus")">Employee Status</a>
+            </th>
+            <th>
+                <a asp-action="Test" asp-route-rowperpage="@page_size" asp-route-searchString="@searchString" asp-route-sortField="Salary" asp-route-sortAscending="@(!(bool)ViewBag.CurrentSortAscending || ViewBag.CurrentSortField != "Salary")">Salary</a>
+            </th>
+            <th>
+                <a asp-action="Test" asp-route-rowperpage="@page_size" asp-route-searchString="@searchString" asp-route-sortField="PositionTitle" asp-route-sortAscending="@(!(bool)ViewBag.CurrentSortAscending || ViewBag.CurrentSortField != "PositionTitle")">Position Title</a>
+            </th>
+
+
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@i.</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PayBasis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PositionTitle)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Edit</a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-success btn-sm">Details</a>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            i++;
+            end = i - 1;
+        }
+    </tbody>
+</table>
+
+<br />
+
+<div class="row">
+    <div class="col-md-4 pagination-container">
+        <span>Sowing @start to @end form @P.TotalRecord items</span>
+    </div>
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-6 ">
+        <partial name="_Paging" model="@P"></partial>
+    </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+@* <script>
+    $(document).ready(function () {
+        $("#searchInput").on('input', function () {
+            var searchString = $(this).val();
+            var currentPage = @current_page;
+            var rowPerPage = @page_size;
+            var url = '@Url.Action("Test", "Employees")' + '?page=' + currentPage + '&rowperpage=' + rowPerPage + '&searchString=' + encodeURIComponent(searchString);
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    $('#employeeTable').html($(data).find('#employeeTable').html()); // Replace only the table content
+                    $('.pagination-container').html($(data).find('.pagination-container').html()); // Replace pagination content
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error("Error occurred:", errorThrown);
+                }
+            });
+        });
+    });
+</script> *@  
+
+<script>
+    $(document).ready(function () {
+        // Search input event listener
+        $("#searchInput").on('input', function () {
+            triggerTestAction();
+        });
+
+        // Row per page select change event listener
+        $("#rowsPerPageSelect").on('change', function () {
+            triggerTestAction();
+        });
+
+        // Function to trigger Test action method
+        function triggerTestAction() {
+            var searchString = $("#searchInput").val();
+            var currentPage = @current_page;
+            var rowPerPage = $("#rowsPerPageSelect").val();
+            var url = '@Url.Action("Test", "Employees")' + '?page=' + currentPage + '&rowperpage=' + rowPerPage + '&searchString=' + encodeURIComponent(searchString);
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    $('#employeeTable').html($(data).find('#employeeTable').html()); // Replace table content
+                    $('.pagination-container').html($(data).find('.pagination-container').html()); // Replace pagination content
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error("Error occurred:", errorThrown);
+                }
+            });
+        }
+    });
+</script>
+
+
+
+
+
+
+

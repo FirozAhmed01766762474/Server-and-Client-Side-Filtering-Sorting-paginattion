@@ -1,0 +1,123 @@
+﻿@using Pagination.Common;
+@model IEnumerable<Pagination.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+    var P = ViewBag.pager;
+    int i = P.SerialStart;
+
+
+}
+
+<h1 class="alart alart-primary bg-primary">Employee Information</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary btn-sm">Create New</a>
+</p>
+<br />
+<form asp-action="Index" method="get">
+    <p>
+        <input type="text" name="searchString" placeholder="Search by Employee Name" value="@ViewData["CurrentFilter"]" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+@if (P != null)
+{
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" href="/Employees/?page=1"> First</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="/Employees/?page= @P.Previous">Previous</a>
+        </li>
+
+        @for (int k = P.StartButton; k <= P.StopButton; k++)
+        {
+            @if (k == P.CurrentPage)
+            {
+                <li class="page-item">
+                    <a class="btn btn-warning" href="/Employees/?page=@k">@k</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/Employees/?page=@k">@k</a>
+                </li>
+            }
+
+        }
+
+        <li class="page-item">
+            <a class="page-link" href="/Employees/?page=@P.Next">Next</a>
+        </li>
+
+        <li class="page-item">
+            <a class="page-link" href="/Employees/?page=@P.LastPage"> Last</a>
+        </li>
+
+    </ul>
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>SL#</th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayBasis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositionTitle)
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@i.</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayBasis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositionTitle)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Edit</a> 
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-success btn-sm">Details</a> 
+                    </td>
+                 <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Delete</a>
+            </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+
+<br />
+
+<partial name="_Paging" model="@P"></partial>
