@@ -77,21 +77,6 @@
     <thead>
         <tr>
             <th>SL#</th>
-@*             <th>
-                @Html.DisplayNameFor(model => model.EmployeeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Salary)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PayBasis)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PositionTitle)
-            </th> *@
 
             <th>
                 <a asp-action="Test" asp-route-rowperpage="@page_size" asp-route-searchString="@searchString" asp-route-sortField="EmployeeName" asp-route-sortAscending="@(!(bool)ViewBag.CurrentSortAscending || ViewBag.CurrentSortField != "EmployeeName")">Employee Name</a>
@@ -164,64 +149,48 @@
 </div>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-@* <script>
-    $(document).ready(function () {
-        $("#searchInput").on('input', function () {
-            var searchString = $(this).val();
-            var currentPage = @current_page;
-            var rowPerPage = @page_size;
-            var url = '@Url.Action("Test", "Employees")' + '?page=' + currentPage + '&rowperpage=' + rowPerPage + '&searchString=' + encodeURIComponent(searchString);
 
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function (data) {
-                    $('#employeeTable').html($(data).find('#employeeTable').html()); // Replace only the table content
-                    $('.pagination-container').html($(data).find('.pagination-container').html()); // Replace pagination content
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error("Error occurred:", errorThrown);
-                }
+@section Scripts{
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Search input event listener
+            $("#searchInput").on('input', function () {
+                triggerTestAction();
             });
-        });
-    });
-</script> *@  
 
-<script>
-    $(document).ready(function () {
-        // Search input event listener
-        $("#searchInput").on('input', function () {
-            triggerTestAction();
-        });
-
-        // Row per page select change event listener
-        $("#rowsPerPageSelect").on('change', function () {
-            triggerTestAction();
-        });
-
-        // Function to trigger Test action method
-        function triggerTestAction() {
-            var searchString = $("#searchInput").val();
-            var currentPage = @current_page;
-            var rowPerPage = $("#rowsPerPageSelect").val();
-            var url = '@Url.Action("Test", "Employees")' + '?page=' + currentPage + '&rowperpage=' + rowPerPage + '&searchString=' + encodeURIComponent(searchString);
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function (data) {
-                    $('#employeeTable').html($(data).find('#employeeTable').html()); // Replace table content
-                    $('.pagination-container').html($(data).find('.pagination-container').html()); // Replace pagination content
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error("Error occurred:", errorThrown);
-                }
+            // Row per page select change event listener
+            $("#rowsPerPageSelect").on('change', function () {
+                triggerTestAction();
             });
-        }
-    });
-</script>
+
+            // Function to trigger Test action method
+            function triggerTestAction() {
+                var searchString = $("#searchInput").val();
+                var currentPage = @current_page;
+                var rowPerPage = $("#rowsPerPageSelect").val();
+                var url = '@Url.Action("Test", "Employees")' + '?page=' + currentPage + '&rowperpage=' + rowPerPage + '&searchString=' + encodeURIComponent(searchString);
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#employeeTable').html($(data).find('#employeeTable').html()); // Replace table content
+                        $('.pagination-container').html($(data).find('.pagination-container').html()); // Replace pagination content
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error("Error occurred:", errorThrown);
+                    }
+                });
+            }
+        });
+    </script>
+
+}
 
 
 
