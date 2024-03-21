@@ -1,0 +1,92 @@
+﻿@using Pagination.Common;
+@model IEnumerable<Pagination.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+
+    int i = 1;
+
+
+}
+
+<h1 class="alart alart-primary bg-primary">Employee Information</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary btn-sm">Create New</a>
+</p>
+
+
+
+<table id="empdata" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>SL#</th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayBasis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositionTitle)
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@i.</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PayBasis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PositionTitle)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Edit</a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-success btn-sm">Details</a>
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+
+@section Styles{
+    <link rel="stylesheet" href="//cdn.datatables.net/2.0.2/css/dataTables.dataTables.min.css" />
+}
+@section Scripts{
+    <script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#empdata').DataTable();
+        });
+    </script>
+}
+
+

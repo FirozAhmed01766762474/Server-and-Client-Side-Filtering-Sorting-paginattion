@@ -116,6 +116,17 @@ namespace App14_EFCore.Controllers
             return View(employees);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ClientSide()
+        {
+
+            var employees = await _context.Employee.ToListAsync();
+
+
+
+            return View(employees);
+        }
+
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -29,7 +29,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">Employee</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Test">Test</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Test">Server Side Pagination</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="ClientSide">Client Side Pagination</a>
                         </li>
                     </ul>
                 </div>
@@ -50,6 +53,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Styles",required:false)
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
